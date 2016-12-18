@@ -1,5 +1,5 @@
-#define MQTT_USER "0x1001"
-#define MQTT_KEY "f53d016ddb384cafbb85942a30e43b2a"
+#define MQTT_USER "your_login"
+#define MQTT_KEY "your_key"
 
-#define WIFI_SSID "no_internet"
-#define WIFI_PASSWORD "m0n1ka123"
+#define WIFI_SSID "your_ssid"
+#define WIFI_PASSWORD "your_pass"
