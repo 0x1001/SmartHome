@@ -1,0 +1,3 @@
+https://curl.haxx.se/
+https://www.virtualbox.org/
+https://mosquitto.org/
