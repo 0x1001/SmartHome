@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include <DHT.h>
 #include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
@@ -14,9 +16,9 @@ DHT dht(DHTPIN, DHTTYPE);
 
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, "io.adafruit.com", 1883, MQTT_USER, MQTT_KEY);
-Adafruit_MQTT_Publish temperature_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/temperature");
-Adafruit_MQTT_Publish humidity_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/humidity");
-Adafruit_MQTT_Publish vbat_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/vbat");
+Adafruit_MQTT_Publish temperature_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/temperature2");
+Adafruit_MQTT_Publish humidity_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/humidity2");
+Adafruit_MQTT_Publish vbat_pub = Adafruit_MQTT_Publish(&mqtt, MQTT_USER "/feeds/vbat2");
 
 void MQTT_connect() {
   int8_t ret;
