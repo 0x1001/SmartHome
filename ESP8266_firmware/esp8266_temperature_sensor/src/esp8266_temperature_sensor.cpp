@@ -1,16 +1,21 @@
 #include <Arduino.h>
-
+#include <FS.h>
 #include <DHT.h>
 #include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 #include "my_data.h"
+#include "config.h"
+
+#ifndef UNIT_TEST
 
 #define DHTTYPE DHT11
 #define DHTPIN 4
 #define DHTPOWER 5
 
 ADC_MODE(ADC_VCC);
+
+Config config;
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -67,13 +72,15 @@ void connect_wifi(const char* ssid, const char* password) {
 void setup() {
   Serial.begin(74880);
   connect_wifi(WIFI_SSID, WIFI_PASSWORD);
-  
+
   dht.begin();
+
+  SPIFFS.begin();
 }
 
 void loop() {
   MQTT_connect();
-  
+
   Serial.println("Reading DHT sensor!");
 
   pinMode(DHTPOWER, OUTPUT);
@@ -84,7 +91,7 @@ void loop() {
   float vbat = ESP.getVcc()/1024.0;
   digitalWrite(DHTPOWER, LOW);
   pinMode(DHTPOWER, INPUT);
- 
+
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
     return;
@@ -120,3 +127,5 @@ void loop() {
   Serial.println("Going to deep sleep");
   ESP.deepSleep(5 * 60000000, WAKE_RF_DEFAULT);
 }
+
+#endif //UNIT_TEST
