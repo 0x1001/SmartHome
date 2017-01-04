@@ -1,23 +1,16 @@
 #include <Arduino.h>
 #include <FS.h>
-#include <DHT.h>
 #include <ESP8266WiFi.h>
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 #include "my_data.h"
-#include "config.h"
+#include "config.hpp"
+#include "sensor.hpp"
 
 #ifndef UNIT_TEST
 
-#define DHTTYPE DHT11
-#define DHTPIN 4
-#define DHTPOWER 5
-
-ADC_MODE(ADC_VCC);
-
 Config config;
-
-DHT dht(DHTPIN, DHTTYPE);
+Sensor sensor;
 
 WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, "io.adafruit.com", 1883, MQTT_USER, MQTT_KEY);
@@ -73,7 +66,7 @@ void setup() {
   Serial.begin(74880);
   connect_wifi(WIFI_SSID, WIFI_PASSWORD);
 
-  dht.begin();
+  sensor.begin();
 
   SPIFFS.begin();
 }
@@ -83,14 +76,10 @@ void loop() {
 
   Serial.println("Reading DHT sensor!");
 
-  pinMode(DHTPOWER, OUTPUT);
-  digitalWrite(DHTPOWER, HIGH);
-  delay(2000);
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-  float vbat = ESP.getVcc()/1024.0;
-  digitalWrite(DHTPOWER, LOW);
-  pinMode(DHTPOWER, INPUT);
+  sensor.measure();
+  float h = sensor.get_humidity();
+  float t = sensor.get_temperature();
+  float vbat = sensor.get_vbat()/1024.0;
 
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");

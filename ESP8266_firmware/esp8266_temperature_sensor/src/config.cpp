@@ -1,4 +1,4 @@
-#include <config.h>
+#include <config.hpp>
 
 void Config::get_temperature_topic(char * topic) {
   JsonObject *database = load();

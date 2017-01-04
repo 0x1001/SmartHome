@@ -1,4 +1,4 @@
-#include <SmartHomeConfig.h>
+#include <SmartHomeConfig.hpp>
 
 SmartHomeConfig::SmartHomeConfig() {
 
