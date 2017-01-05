@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <DHT.h>
 
+#ifndef SENSOR_H
+#define SENSOR_H
+
 class Sensor {
   public:
     Sensor();
@@ -19,3 +22,5 @@ class Sensor {
 
     DHT _sensor;
 };
+
+#endif
