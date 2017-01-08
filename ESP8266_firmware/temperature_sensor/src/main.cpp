@@ -4,13 +4,11 @@
 #include <Adafruit_MQTT.h>
 #include <Adafruit_MQTT_Client.h>
 #include <my_data.h>
-#include <config.hpp>
 #include <sensor.hpp>
 #include <publish.hpp>
 
 #ifndef UNIT_TEST
 
-Config config;
 Sensor sensor;
 Publish publish(MQTT_USER, MQTT_KEY);
 
@@ -46,7 +44,7 @@ void loop() {
   sensor.measure();
   float h = sensor.get_humidity();
   float t = sensor.get_temperature();
-  float vbat = sensor.get_vbat()/1024.0;
+  float vbat = sensor.get_vbat();
 
   if (isnan(h) || isnan(t)) {
     Serial.println("Failed to read from DHT sensor!");
@@ -63,29 +61,29 @@ void loop() {
   Serial.print(vbat);
   Serial.println(" V");
 
-  Serial.print("Publishing temperature to 0x1001/feeds/temperature... ");
-  if (! publish.push_to_topic("0x1001/feeds/temperature", t)) {
+  Serial.print("Publishing temperature to " TEMPERATURE_TOPIC "... ");
+  if (! publish.push_to_topic(TEMPERATURE_TOPIC, t)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
   }
 
-  Serial.print("Publishing humidity to /feeds/humidity... ");
-  if (! publish.push_to_topic("0x1001/feeds/humidity", h)) {
+  Serial.print("Publishing humidity to " HUMIDITY_TOPIC "... ");
+  if (! publish.push_to_topic(HUMIDITY_TOPIC, h)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
   }
 
-  Serial.print("Publishing vbat to 0x1001feeds/vbat... ");
-  if (! publish.push_to_topic("0x1001/feeds/vbat", vbat)) {
+  Serial.print("Publishing vbat to " VBAT_TOPIC "... ");
+  if (! publish.push_to_topic(VBAT_TOPIC, vbat)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
   }
 
   Serial.println("Going to deep sleep");
-  ESP.deepSleep(5 * 60000000, WAKE_RF_DEFAULT);
+  ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
 }
 
 #endif //UNIT_TEST

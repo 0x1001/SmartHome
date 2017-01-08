@@ -2,7 +2,7 @@
 
 ADC_MODE(ADC_VCC);
 
-Sensor::Sensor(): _sensor(SENSOR_COMMUNICATION_PIN, DHT11) {
+Sensor::Sensor(): _sensor(SENSOR_COMMUNICATION_PIN, DHT22) {
 }
 
 void Sensor::begin() {
@@ -14,8 +14,8 @@ void Sensor::measure() {
   digitalWrite(SENSOR_POWER_PIN, HIGH);
   delay(2000);
 
-  _temperature = _sensor.readHumidity();
-  _humidity = _sensor.readTemperature();
+  _temperature = _sensor.readTemperature();
+  _humidity = _sensor.readHumidity();
   _vbat = ESP.getVcc()/1024.0;
 
   digitalWrite(SENSOR_POWER_PIN, LOW);
