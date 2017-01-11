@@ -6,8 +6,8 @@
 #define PUBLISH_H
 
 #define PUBLISH_STRING_SIZE 255
-#define SUCCESS 1
-#define FAILURE 0
+#define PUBLISH_SUCCESS 1
+#define PUBLISH_FAILURE 0
 
 class Publish {
   public:

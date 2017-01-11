@@ -7,19 +7,19 @@ Publish::Publish(const char *user_name, const char *user_password): _mqtt_client
 int Publish::begin() {
   int status = 1;
   if (_mqtt_client.connected()) {
-    return SUCCESS;
+    return PUBLISH_SUCCESS;
   }
 
   for (int retries = 3; retries > 0; retries--) {
     if (_mqtt_client.connect() == 0) {
-      return SUCCESS;
+      return PUBLISH_SUCCESS;
     }
 
     _mqtt_client.disconnect();
     delay(5000);
   }
 
-  return FAILURE;
+  return PUBLISH_FAILURE;
 }
 
 int Publish::push_to_topic(const char *topic, float value) {
