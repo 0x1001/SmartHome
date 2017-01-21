@@ -1,13 +1,13 @@
 #include <Arduino.h>
 #include <my_data.h>
 #include <sensor.hpp>
-#include <publish.hpp>
+#include <mqtt.hpp>
 #include <network.hpp>
 
 #ifndef UNIT_TEST
 
 Sensor sensor;
-Publish publish(MQTT_USER, MQTT_KEY);
+MQTT mqtt(MQTT_USER, MQTT_KEY);
 Network network(WIFI_SSID, WIFI_PASSWORD);
 
 void setup() {
@@ -29,7 +29,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   sensor.begin();
-  publish.begin();
+  mqtt.begin();
 }
 
 void loop() {
@@ -56,21 +56,21 @@ void loop() {
   Serial.println(" V");
 
   Serial.print("Publishing temperature to " TEMPERATURE_TOPIC "... ");
-  if (! publish.push_to_topic(TEMPERATURE_TOPIC, temperature)) {
+  if (! mqtt.publish(TEMPERATURE_TOPIC, temperature)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
   }
 
   Serial.print("Publishing humidity to " HUMIDITY_TOPIC "... ");
-  if (! publish.push_to_topic(HUMIDITY_TOPIC, humidity)) {
+  if (! mqtt.publish(HUMIDITY_TOPIC, humidity)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
   }
 
   Serial.print("Publishing vbat to " VBAT_TOPIC "... ");
-  if (! publish.push_to_topic(VBAT_TOPIC, vbat)) {
+  if (! mqtt.publish(VBAT_TOPIC, vbat)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
