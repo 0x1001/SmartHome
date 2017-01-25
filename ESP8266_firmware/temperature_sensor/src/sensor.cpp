@@ -1,7 +1,5 @@
 #include <sensor.hpp>
 
-ADC_MODE(ADC_VCC);
-
 Sensor::Sensor(): _sensor(SENSOR_COMMUNICATION_PIN, DHT22) {
 }
 
@@ -16,7 +14,6 @@ void Sensor::measure() {
 
   _temperature = _sensor.readTemperature();
   _humidity = _sensor.readHumidity();
-  _vbat = ESP.getVcc()/1024.0;
 
   digitalWrite(SENSOR_POWER_PIN, LOW);
   pinMode(SENSOR_POWER_PIN, INPUT);
@@ -28,8 +25,4 @@ float Sensor::get_temperature() {
 
 float Sensor::get_humidity() {
   return _humidity;
-}
-
-float Sensor::get_vbat() {
-  return _vbat;
 }

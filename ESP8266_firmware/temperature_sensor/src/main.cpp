@@ -3,12 +3,14 @@
 #include <sensor.hpp>
 #include <mqtt.hpp>
 #include <network.hpp>
+#include <vbat.hpp>
 
 #ifndef UNIT_TEST
 
 Sensor sensor;
 MQTT mqtt(MQTT_USER, MQTT_KEY);
 Network network(WIFI_SSID, WIFI_PASSWORD);
+VBAT vbat;
 
 void setup() {
   Serial.begin(74880);
@@ -33,11 +35,24 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("Reading Vbat value!");
+  float vbat_value = vbat.get_vbat();
+
+  Serial.print("Vbat: ");
+  Serial.print(vbat_value);
+  Serial.println(" V");
+
+  Serial.print("Publishing vbat to " VBAT_TOPIC "... ");
+  if (! mqtt.publish(VBAT_TOPIC, vbat_value)) {
+    Serial.println("Failed");
+  } else {
+    Serial.println("OK!");
+  }
+
   Serial.println("Reading DHT sensor!");
   sensor.measure();
   float humidity = sensor.get_humidity();
   float temperature = sensor.get_temperature();
-  float vbat = sensor.get_vbat();
 
   if (isnan(humidity) || isnan(temperature)) {
     Serial.println("Failed to read from DHT sensor!");
@@ -50,10 +65,7 @@ void loop() {
   Serial.print(" %\t");
   Serial.print("Temperature: ");
   Serial.print(temperature);
-  Serial.print(" *C\t");
-  Serial.print("Vbat: ");
-  Serial.print(vbat);
-  Serial.println(" V");
+  Serial.println(" *C\t");
 
   Serial.print("Publishing temperature to " TEMPERATURE_TOPIC "... ");
   if (! mqtt.publish(TEMPERATURE_TOPIC, temperature)) {
@@ -64,13 +76,6 @@ void loop() {
 
   Serial.print("Publishing humidity to " HUMIDITY_TOPIC "... ");
   if (! mqtt.publish(HUMIDITY_TOPIC, humidity)) {
-    Serial.println("Failed");
-  } else {
-    Serial.println("OK!");
-  }
-
-  Serial.print("Publishing vbat to " VBAT_TOPIC "... ");
-  if (! mqtt.publish(VBAT_TOPIC, vbat)) {
     Serial.println("Failed");
   } else {
     Serial.println("OK!");
