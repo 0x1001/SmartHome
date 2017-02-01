@@ -1,6 +1,7 @@
 #include <mqtt.hpp>
 
-MQTT::MQTT(const char *user_name, const char *user_password): _mqtt_client(&_wifi_client, "io.adafruit.com", 1883, user_name, user_password) {
+MQTT::MQTT(const char *server_address, const int server_port, const char *user_name, const char *user_password):
+  _mqtt_client(&_wifi_client, server_address, server_port, user_name, user_password) {
   for(int i=0; i < MQTT_MAX_SUBSCRIPTIONS; i++) {
       subscriptions[i] = 0;
   }
@@ -52,7 +53,7 @@ int MQTT::_connect() {
     return MQTT_SUCCESS;
   }
 
-  for (int retries = 3; retries > 0; retries--) {
+  for (int retries = 10; retries > 0; retries--) {
     if (_mqtt_client.connect() == 0) {
       return MQTT_SUCCESS;
     }

@@ -7,7 +7,7 @@
 #ifndef UNIT_TEST
 
 Network network(WIFI_SSID, WIFI_PASSWORD);
-MQTT mqtt(MQTT_USER, MQTT_KEY);
+MQTT mqtt(MQTT_SERVER, MQTT_PORT, MQTT_USER, MQTT_KEY);
 Plug plug(PLUG_PINOUT);
 
 void setup() {
@@ -21,8 +21,6 @@ void setup() {
     Serial.println("WiFi connected: " WIFI_SSID);
   } else {
     Serial.println("WiFi failed to connect to " WIFI_SSID);
-    Serial.println("Going to deep sleep.");
-    ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
   }
 
   Serial.println("IP address: ");
@@ -33,7 +31,6 @@ void setup() {
   }
   else {
     Serial.println("Faild to connect to MQTT server with user name " MQTT_USER);
-    ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
   }
 
   plug.begin();
@@ -59,7 +56,6 @@ void loop() {
     Serial.println(last_read);
   } else {
     Serial.println("Error happend while reading subscription " ONOFFTOPIC);
-    ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
   }
 }
 

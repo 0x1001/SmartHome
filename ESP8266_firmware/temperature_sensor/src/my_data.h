@@ -1,5 +1,7 @@
 //COMMON
 
+#define MQTT_SERVER "address"
+#define MQTT_PORT 1883
 #define MQTT_USER "user_name"
 #define MQTT_KEY "user_key"
 

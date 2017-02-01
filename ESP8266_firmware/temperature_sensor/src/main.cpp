@@ -8,7 +8,7 @@
 #ifndef UNIT_TEST
 
 Sensor sensor;
-MQTT mqtt(MQTT_USER, MQTT_KEY);
+MQTT mqtt(MQTT_SERVER, MQTT_PORT, MQTT_USER, MQTT_KEY);
 Network network(WIFI_SSID, WIFI_PASSWORD);
 VBAT vbat;
 
