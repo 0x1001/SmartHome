@@ -18,10 +18,12 @@ class MQTT {
     int begin();
     int publish(const char *topic, float value);
     int read_subscription(const char *topic, char *value);
+    void set_retry(int count);
 
   private:
     WiFiClient _wifi_client;
     Adafruit_MQTT_Client _mqtt_client;
+    int retry = 1;
     const char *subscriptions[MQTT_MAX_SUBSCRIPTIONS];
     int _connect();
     int _disconnect();

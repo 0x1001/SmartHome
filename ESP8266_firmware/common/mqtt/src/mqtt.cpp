@@ -11,6 +11,10 @@ int MQTT::begin() {
   return _connect();
 }
 
+void MQTT::set_retry(int count) {
+  retry = count;
+}
+
 int MQTT::publish(const char *topic, float value) {
   if (_connect() != MQTT_SUCCESS) {
     return MQTT_FAILURE;
@@ -53,7 +57,7 @@ int MQTT::_connect() {
     return MQTT_SUCCESS;
   }
 
-  for (int retries = 10; retries > 0; retries--) {
+  for (int retries = retry; retries > 0; retries--) {
     if (_mqtt_client.connect() == 0) {
       return MQTT_SUCCESS;
     }
