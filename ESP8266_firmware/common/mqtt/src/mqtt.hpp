@@ -17,7 +17,8 @@ class MQTT {
     MQTT(const char *server_address, const int server_port, const char *user_name, const char *user_password);
     int begin();
     int publish(const char *topic, float value);
-    int read_subscription(const char *topic, char *value);
+    int publish(const char *topic, const char *value);
+    int read_subscription(const char *topic, char *value, int timeout = 5000);
     void set_retry(int count);
 
   private:

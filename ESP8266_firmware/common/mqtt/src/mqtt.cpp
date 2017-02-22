@@ -23,7 +23,15 @@ int MQTT::publish(const char *topic, float value) {
   return publisher.publish(value);
 }
 
-int MQTT::read_subscription(const char *topic, char *value) {
+int MQTT::publish(const char *topic, const char *value) {
+  if (_connect() != MQTT_SUCCESS) {
+    return MQTT_FAILURE;
+  }
+  Adafruit_MQTT_Publish publisher = Adafruit_MQTT_Publish(&_mqtt_client, topic);
+  return publisher.publish(value);
+}
+
+int MQTT::read_subscription(const char *topic, char *value, int timeout) {
   Adafruit_MQTT_Subscribe onoffbutton = Adafruit_MQTT_Subscribe(&_mqtt_client, topic);
   Adafruit_MQTT_Subscribe *subscription;
 
@@ -43,7 +51,7 @@ int MQTT::read_subscription(const char *topic, char *value) {
     return MQTT_FAILURE;
   }
 
-  while (subscription = _mqtt_client.readSubscription(5000)) {
+  while (subscription = _mqtt_client.readSubscription(timeout)) {
     if (subscription == &onoffbutton) {
       strncpy(value, (char *)onoffbutton.lastread, MQTT_MAX_CHAR_NUM);
       return MQTT_SUCCESS;
