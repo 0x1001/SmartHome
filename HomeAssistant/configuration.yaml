@@ -13,13 +13,13 @@ homeassistant:
 
   customize:
     # Only the 'entity_id' is required.  All other options are optional.
-    - entity_id: sensor.yr_symbol
+    sensor.yr_symbol:
       friendly_name: Weather
-    - entity_id: sensor.yr_temperature
+    sensor.yr_temperature:
       friendly_name: Temperature
-    - entity_id: sensor.yr_pressure
+    sensor.yr_pressure:
       friendly_name: Pressure
-    - entity_id: sensor.yr_humidity
+    sensor.yr_humidity:
       friendly_name: Humidity
 
 mqtt:
@@ -69,33 +69,60 @@ sensor:
       - humidity
   - platform: mqtt
     state_topic: "home/temperature1"
-    name: "Temperature"
+    name: "temperature1"
+    friendly_name: "Temperature"
     unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: "home/temperature2"
-    name: "Temperature"
+    friendly_name: "Temperature"
+    name: "temperature2"
+    unit_of_measurement: "°C"
+  - platform: mqtt
+    state_topic: "home/temperature3"
+    friendly_name: "Temperature"
+    name: "temperature3"
     unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: "home/humidity1"
-    name: "Humidity"
+    friendly_name: "Humidity"
+    name: "humidity1"
     unit_of_measurement: "%"
   - platform: mqtt
     state_topic: "home/humidity2"
-    name: "Humidity"
+    friendly_name: "Humidity"
+    name: "humidity2"
+    unit_of_measurement: "%"
+  - platform: mqtt
+    state_topic: "home/humidity3"
+    friendly_name: "Humidity"
+    name: "humidity3"
     unit_of_measurement: "%"
   - platform: mqtt
     state_topic: "home/vbat1"
-    name: "Battery"
+    friendly_name: "Battery"
+    name: "vbat1"
     unit_of_measurement: "V"
   - platform: mqtt
     state_topic: "home/vbat2"
-    name: "Battery"
+    friendly_name: "Battery"
+    name: "vbat2"
+    unit_of_measurement: "V"
+  - platform: mqtt
+    state_topic: "home/vbat3"
+    friendly_name: "Battery"
+    name: "vbat3"
     unit_of_measurement: "V"
 
 switch:
   - platform: mqtt
     command_topic: "home/plug1"
+    state_topic: "home/plug1"
     name: "TV back light"
+    retain: true
+  - platform: mqtt
+    command_topic: "home/plug2"
+    state_topic: "home/plug2"
+    name: "Desk lamp"
     retain: true
 
 
@@ -105,26 +132,62 @@ tts:
 
 
 group:
-  default_view:
-    view: no
+## Views
+  living_room_view:
+    view: yes
+    name: Living room
     entities:
       - group.living_room
+  bed_room_view:
+    view: yes
+    name: Bed room
+    entities:
+      - group.bed_room
+  piotr_room_view:
+    view: yes
+    name: Piotr room
+    entities:
+      - group.piotr_room
+  outside_view:
+    view: yes
+    name: Outside
+    entities:
       - group.outside
+## Groups
   living_room:
     name: Living room
-    view: yes
     entities:
-      - sensor.humidity_2
-      - sensor.temperature_2
-      - sensor.battery_2
+      - sensor.temperature2
+      - sensor.humidity2
+      - sensor.vbat2
       - switch.tv_back_light
+      - switch.desk_lamp
       - media_player.tv
+
+  bed_room:
+    name: Bed room
+    entities:
+      - sensor.humidity1
+      - sensor.temperature1
+      - sensor.vbat1
+
+  piotr_room:
+    name: Piotr room
+    entities:
+      - sensor.humidity3
+      - sensor.temperature3
+      - sensor.vbat3
+
   outside:
     name: Outside
-    view: yes
     entities:
       - sensor.yr_symbol
       - sensor.yr_temperature
       - sensor.yr_pressure
       - sensor.yr_humidity
+      - sun.sun
+
+#device_tracker:
+#  - platform: nmap_tracker
+#    hosts: 192.168.0.1/24
 
