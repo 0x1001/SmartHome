@@ -22,10 +22,16 @@ int Network::connect() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
+	connected = true;
     return NETWORK_SUCCESS;
   } else {
+    connected = false;
     return NETWORK_FAILURE;
   }
+}
+
+bool Network::is_connected() {
+	return connected;
 }
 
 IPAddress Network::get_local_ip() {

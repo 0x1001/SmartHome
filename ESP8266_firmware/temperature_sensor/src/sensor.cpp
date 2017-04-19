@@ -10,7 +10,7 @@ void Sensor::begin() {
 void Sensor::measure() {
   pinMode(SENSOR_POWER_PIN, OUTPUT);
   digitalWrite(SENSOR_POWER_PIN, HIGH);
-  delay(2000);
+  delay(1000);
 
   _temperature = _sensor.readTemperature();
   _humidity = _sensor.readHumidity();

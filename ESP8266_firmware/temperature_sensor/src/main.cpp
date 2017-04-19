@@ -23,8 +23,10 @@ void setup() {
     Serial.println("WiFi connected: " WIFI_SSID);
   } else {
     Serial.println("WiFi failed to connect to " WIFI_SSID);
-    Serial.println("Going to deep sleep.");
-    ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
+    Serial.print("Going to deep sleep for ");
+    Serial.print(SLEEP_TIME_NO_WIFI);
+    Serial.println(" us.");
+    ESP.deepSleep(SLEEP_TIME_NO_WIFI);
   }
 
   Serial.println("IP address: ");
@@ -56,8 +58,10 @@ void loop() {
 
   if (isnan(humidity) || isnan(temperature)) {
     Serial.println("Failed to read from DHT sensor!");
-    Serial.println("Going to deep sleep.");
-    ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
+    Serial.print("Going to deep sleep for ");
+    Serial.print(SLEEP_TIME);
+    Serial.println(" us.");
+    ESP.deepSleep(SLEEP_TIME);
   }
 
   Serial.print("Humidity: ");
@@ -81,8 +85,10 @@ void loop() {
     Serial.println("OK!");
   }
 
-  Serial.println("Going to deep sleep.");
-  ESP.deepSleep(SLEEP_TIME, WAKE_RF_DEFAULT);
+  Serial.print("Going to deep sleep for ");
+  Serial.print(SLEEP_TIME);
+  Serial.println(" us.");
+  ESP.deepSleep(SLEEP_TIME);
 }
 
 #endif //UNIT_TEST
