@@ -32,7 +32,6 @@ void setup() {
     Serial.println("WiFi connected: " WIFI_SSID);
   } else {
     Serial.println("WiFi failed to connect to " WIFI_SSID);
-    stop();
   }
 
   Serial.println("IP address: ");
@@ -43,7 +42,6 @@ void setup() {
   }
   else {
     Serial.println("Faild to connect to MQTT server with user name " MQTT_USER);
-    stop();
   }
 
   plug.begin();
@@ -51,6 +49,10 @@ void setup() {
 }
 
 void loop() {
+  if (!network.is_connected()) {
+    network.begin();
+  }
+
   char last_state[MQTT_MAX_CHAR_NUM];
   int status = mqtt.read_subscription(ONOFFTOPIC, last_state, 100);
 
@@ -68,16 +70,17 @@ void loop() {
     //Serial.println(last_state);
   } else {
     Serial.println("Error happend while reading subscription " ONOFFTOPIC);
-    stop();
   }
 
   if (button.pressed()) {
     Serial.println("Button has been pressed.");
     if (strcmp(last_state, ON_STATE) == 0) {
-      plug.turn_off();
+      //plug.turn_off();
+      //strcpy(last_state, OFF_STATE);
       mqtt.publish(ONOFFTOPIC, OFF_STATE);
     } else {
-      plug.turn_on();
+      //plug.turn_on();
+      //strcpy(last_state, ON_STATE);
       mqtt.publish(ONOFFTOPIC, ON_STATE);
     }
     button.reset();
