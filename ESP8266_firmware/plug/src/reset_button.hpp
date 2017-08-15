@@ -3,6 +3,9 @@
 #ifndef RESET_BUTTON_H
 #define RESET_BUTTON_H
 
+#define DEBOUNCE_MAX 40000
+#define DEBOUNCE_DELAY 500
+
 class ResetButton {
   public:
     ResetButton(int pin);
@@ -13,7 +16,8 @@ class ResetButton {
 
   private:
     int pin;
-    bool button_pressed = false;
+    volatile bool button_pressed = false;
+    unsigned long lastPressTime = 0;
 };
 
 #endif //RESET_BUTTON_H
