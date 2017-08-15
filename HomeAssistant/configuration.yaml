@@ -124,6 +124,11 @@ switch:
     state_topic: "home/plug2"
     name: "Desk lamp"
     retain: true
+  - platform: mqtt
+    command_topic: "home/plug3"
+    state_topic: "home/plug3"
+    name: "Kitchen lamp"
+    retain: true
 
 
 # Text to speech
@@ -162,6 +167,7 @@ group:
       - sensor.vbat2
       - switch.tv_back_light
       - switch.desk_lamp
+      - switch.kitchen_lamp
       - media_player.tv
 
   bed_room:
