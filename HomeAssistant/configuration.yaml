@@ -69,48 +69,39 @@ sensor:
       - humidity
   - platform: mqtt
     state_topic: "home/temperature1"
-    name: "temperature1"
-    friendly_name: "Temperature"
+    name: "Temperature Bed Room"
     unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: "home/temperature2"
-    friendly_name: "Temperature"
-    name: "temperature2"
+    name: "Temperature Living Room"
     unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: "home/temperature3"
-    friendly_name: "Temperature"
-    name: "temperature3"
+    name: "Temperature Piotr Room"
     unit_of_measurement: "°C"
   - platform: mqtt
     state_topic: "home/humidity1"
-    friendly_name: "Humidity"
-    name: "humidity1"
+    name: "Humidity Bed Room"
     unit_of_measurement: "%"
   - platform: mqtt
     state_topic: "home/humidity2"
-    friendly_name: "Humidity"
-    name: "humidity2"
+    name: "Humidity Living Room"
     unit_of_measurement: "%"
   - platform: mqtt
     state_topic: "home/humidity3"
-    friendly_name: "Humidity"
-    name: "humidity3"
+    name: "Humidity Piotr Room"
     unit_of_measurement: "%"
   - platform: mqtt
     state_topic: "home/vbat1"
-    friendly_name: "Battery"
-    name: "vbat1"
+    name: "Battery Bed Room"
     unit_of_measurement: "V"
   - platform: mqtt
     state_topic: "home/vbat2"
-    friendly_name: "Battery"
-    name: "vbat2"
+    name: "Battery Living Room"
     unit_of_measurement: "V"
   - platform: mqtt
     state_topic: "home/vbat3"
-    friendly_name: "Battery"
-    name: "vbat3"
+    name: "Battery Piotr Room"
     unit_of_measurement: "V"
 
 switch:
@@ -124,12 +115,36 @@ switch:
     state_topic: "home/plug2"
     name: "Desk lamp"
     retain: true
+  - platform: mqtt
+    command_topic: "home/plug3"
+    state_topic: "home/plug3"
+    name: "Kitchen lamp"
+    retain: true
 
 
 # Text to speech
 tts:
   platform: google
 
+history_graph:
+  gr_living_room_t:
+    name: Temperature
+    entities:
+      - sensor.temperature_living_room
+      - sensor.temperature_bed_room
+      - sensor.temperature_piotr_room
+      - sensor.yr_temperature
+    hours_to_show: 240
+    refresh: 60
+  gr_piotr_h:
+    name: Humidity
+    entities:
+      - sensor.humidity_living_room
+      - sensor.humidity_bed_room
+      - sensor.humidity_piotr_room
+      - sensor.yr_humidity
+    hours_to_show: 240
+    refresh: 60
 
 group:
 ## Views
@@ -153,30 +168,32 @@ group:
     name: Outside
     entities:
       - group.outside
+
 ## Groups
   living_room:
     name: Living room
     entities:
-      - sensor.temperature2
-      - sensor.humidity2
-      - sensor.vbat2
+      - sensor.temperature_living_room
+      - sensor.humidity_living_room
+      - sensor.battery_living_room
       - switch.tv_back_light
       - switch.desk_lamp
+      - switch.kitchen_lamp
       - media_player.tv
 
   bed_room:
     name: Bed room
     entities:
-      - sensor.humidity1
-      - sensor.temperature1
-      - sensor.vbat1
+      - sensor.temperature_bed_room
+      - sensor.humidity_bed_room
+      - sensor.battery_bed_room
 
   piotr_room:
     name: Piotr room
     entities:
-      - sensor.humidity3
-      - sensor.temperature3
-      - sensor.vbat3
+      - sensor.temperature_piotr_room
+      - sensor.humidity_piotr_room
+      - sensor.battery_piotr_room
 
   outside:
     name: Outside
