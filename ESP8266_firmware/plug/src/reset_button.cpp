@@ -18,11 +18,18 @@ void ResetButton::reset() {
 }
 
 void ResetButton::button_interrupt() {
-  static unsigned long last_interrupt = 0;
-  unsigned long current_interrupt = millis();
-
-  if (current_interrupt - last_interrupt > 200 ) {
-    button_pressed = true;
+  if (millis() - lastPressTime < DEBOUNCE_DELAY) {
+    return;
   }
-  last_interrupt = current_interrupt;
+
+  int debounce_counter = 0;
+  for(int i=0; i < DEBOUNCE_MAX; i++) {
+      if(digitalRead(pin) == HIGH) {
+        debounce_counter++;
+      }
+  }
+
+  if (debounce_counter == DEBOUNCE_MAX) {
+      button_pressed = true;
+  }
 }
