@@ -45,7 +45,7 @@ http:
 updater:
 
 # Discover some devices automatically
-discovery:
+# discovery:
 
 # Allows you to issue voice commands from the frontend in enabled browsers
 conversation:
@@ -58,6 +58,14 @@ logbook:
 
 # Track the sun
 sun:
+
+ffmpeg:
+  ffmpeg_bin: /usr/bin/avconv
+
+camera:
+  - platform: ffmpeg
+    input: rtsp://192.168.0.43:554/onvif1
+    name: piotr_camera
 
 # Sensors
 sensor:
@@ -120,7 +128,9 @@ switch:
     state_topic: "home/plug3"
     name: "Kitchen lamp"
     retain: true
-
+  - platform: wake_on_lan
+    name: "Computer"
+    mac_address: "94-DE-80-CC-08-8C"
 
 # Text to speech
 tts:
@@ -179,6 +189,7 @@ group:
       - switch.tv_back_light
       - switch.desk_lamp
       - switch.kitchen_lamp
+      - switch.computer
       - media_player.tv
 
   bed_room:
@@ -194,6 +205,7 @@ group:
       - sensor.temperature_piotr_room
       - sensor.humidity_piotr_room
       - sensor.battery_piotr_room
+      - camera.piotr_camera
 
   outside:
     name: Outside
@@ -204,7 +216,5 @@ group:
       - sensor.yr_humidity
       - sun.sun
 
-#device_tracker:
-#  - platform: nmap_tracker
-#    hosts: 192.168.0.1/24
-
+device_tracker:
+  - platform: upc_connect
